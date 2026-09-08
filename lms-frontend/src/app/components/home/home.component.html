@@ -1,0 +1,379 @@
+<div class="home-master-container">
+
+  <!-- 1. HERO SECTION -->
+  <section class="hero-section blueprint-grid">
+    <div class="hero-content-wrapper">
+
+      <!-- Left: Portrait Area -->
+      <div class="hero-left-column">
+        <div class="portrait-container">
+          <img class="ambedkar-img" src="assets/images/ambedkar.png" alt="Dr. B. R. Ambedkar">
+        </div>
+        <div class="quote-area">
+          <p>"We may forgo material benefits of civilization, but we cannot forgo our right and opportunity to reap the
+            benefits of the highest education to the fullest extent as the education is the greatest material benefit."
+          </p>
+          <span class="quote-author">— Dr. B. R. Ambedkar</span>
+        </div>
+      </div>
+
+      <!-- Right: Typography Area -->
+      <div class="hero-right-column">
+        <span class="welcome-label">WELCOME TO</span>
+        <h1 class="main-title" style="display: flex; align-items: center; gap: 0.5rem;">
+          <img src="assets/images/braoutv-latest-logo.png" alt="Logo" style="height: 1.5em; object-fit: contain;">
+          <span style="color: #3b82f6;">BRAOU</span>
+          <span style="background-color: white; color: red; font-size: 0.95em; padding: 0.05em 0.08em; border-radius: 6px; font-weight: 900; line-height: 1;">TV</span>
+        </h1>
+        <h2 class="sub-title">Your Knowledge. Your Way.<br>Anytime, Anywhere.</h2>
+        <p class="description">Explore high-quality educational content, live programs, expert talks, and interactive
+          courses designed to empower lifelong learners.</p>
+
+        <div class="hero-button-group">
+          <a routerLink="/live" class="btn btn-primary btn-icon">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z">
+              </path>
+            </svg>
+            Watch Live
+          </a>
+          <a routerLink="/schedules" class="btn btn-primary btn-icon">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 10h16M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-16v2m8-2v2" />
+            </svg>
+            View Schedules
+          </a>
+          <a routerLink="/courses" class="btn btn-secondary btn-icon">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+              </path>
+            </svg>
+            Explore Courses
+          </a>
+        </div>
+
+        <div class="faculty-labels-container" *ngIf="uniqueFaculties.length > 0">
+          <a *ngFor="let fac of uniqueFaculties" [routerLink]="['/courses']" [queryParams]="{ faculty: fac }"
+            class="faculty-label-badge">
+            {{ fac }}
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LAUNCH BRAOU TV BANNER -->
+  <section class="launch-banner" *ngIf="contactObj?.isLaunchVideoActive">
+    <div class="launch-icon-wrapper">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+        <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
+      </svg>
+    </div>
+    <div class="launch-content">
+      <h2 style="display: flex; align-items: center; gap: 0.5rem;">
+        Launch <span style="color: #3b82f6;">BRAOU</span>
+        <span style="background-color: white; color: red; font-size: 0.85em; padding: 0.05em 0.15em; border-radius: 6px; font-weight: 900; line-height: 1;">TV</span>
+      </h2>
+      <p>Experience the grand inauguration of our educational broadcasting platform</p>
+    </div>
+    <button class="btn-launch-now" (click)="initiateLaunch()">
+      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z">
+        </path>
+      </svg>
+      Launch Now
+    </button>
+  </section>
+
+  <!-- 2. LIVE TV SECTION -->
+  <section class="module-section" *ngIf="activeLiveStream">
+    <div class="module-header">
+      <div class="header-title-pack">
+        <div class="tv-icon-base">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+            </path>
+          </svg>
+        </div>
+        <h2>Live TV</h2>
+        <span class="live-dot-badge"><span class="dot pulse"></span> LIVE NOW</span>
+      </div>
+    </div>
+
+    <div class="live-tv-player-card">
+      <div class="player-wrapper">
+        <iframe *ngIf="getSafeUrl(activeLiveStream.url, false); let safeUrl" [src]="safeUrl" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+      <div class="live-player-info">
+        <h3>{{ activeLiveStream.name }}</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. LATEST COURSES -->
+  <section class="module-section" *ngIf="latestCourses.length > 0">
+    <div class="module-header">
+      <div class="header-title-pack">
+        <div class="tv-icon-base book-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+            </path>
+          </svg>
+        </div>
+        <h2>Latest Courses</h2>
+      </div>
+      <a routerLink="/courses" class="btn-view-all">View all &rarr;</a>
+    </div>
+
+    <div class="card-grid">
+      <div class="ui-card" *ngFor="let course of latestCourses">
+        <!-- Facade Wrapper -->
+        <div class="facade-container" *ngIf="activeVideoKey !== 'course-' + course.id"
+          (click)="playVideo('course-' + course.id)">
+          <img loading="lazy" [src]="'https://img.youtube.com/vi/' + extractVideoId(course.url) + '/hqdefault.jpg'"
+            alt="Video Thumbnail" class="facade-img">
+          <div class="facade-play-btn">
+            <svg viewBox="0 0 68 48" class="youtube-play-icon">
+              <path class="ytp-large-play-button-bg"
+                d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z"
+                fill="#FF0000"></path>
+              <path d="M 45,24 27,14 27,34" fill="#fff"></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- iframe conditionally renders -->
+        <div class="iframe-container" *ngIf="activeVideoKey === 'course-' + course.id">
+          <iframe *ngIf="getSafeUrl(course.url); let safeUrl" [src]="safeUrl" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          <div class="invalid-url" *ngIf="!getSafeUrl(course.url)">
+            <span>Media Unavailable</span>
+          </div>
+        </div>
+        <div class="card-details">
+          <h3>{{ course.title }}</h3>
+          <p class="meta-sub">{{ course.subject || 'General' }}</p>
+          <div class="academic-details badges-row">
+            <span class="outline-badge" *ngIf="course.type">{{ course.type }}</span>
+            <span class="outline-badge" *ngIf="course.faculty">{{ course.faculty }}</span>
+            <span class="outline-badge" *ngIf="course.courseYear">Year {{ course.courseYear }}</span>
+            <span class="outline-badge" *ngIf="course.semester">Sem {{ course.semester }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. LATEST PROGRAMMES -->
+  <section class="module-section" *ngIf="latestProgrammes.length > 0">
+    <div class="module-header">
+      <div class="header-title-pack">
+        <div class="tv-icon-base cap-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+          </svg>
+        </div>
+        <h2>Academic Programmes</h2>
+      </div>
+      <a routerLink="/programmes" class="btn-view-all">View all &rarr;</a>
+    </div>
+
+    <div class="card-grid">
+      <div class="ui-card" *ngFor="let prog of latestProgrammes">
+        <!-- Facade Wrapper -->
+        <div class="facade-container" *ngIf="activeVideoKey !== 'prog-' + prog.id"
+          (click)="playVideo('prog-' + prog.id)">
+          <img loading="lazy" [src]="'https://img.youtube.com/vi/' + extractVideoId(prog.url) + '/hqdefault.jpg'"
+            alt="Video Thumbnail" class="facade-img">
+          <div class="facade-play-btn">
+            <svg viewBox="0 0 68 48" class="youtube-play-icon">
+              <path class="ytp-large-play-button-bg"
+                d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z"
+                fill="#FF0000"></path>
+              <path d="M 45,24 27,14 27,34" fill="#fff"></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- iframe conditionally renders -->
+        <div class="iframe-container" *ngIf="activeVideoKey === 'prog-' + prog.id">
+          <iframe *ngIf="getSafeUrl(prog.url); let safeUrl" [src]="safeUrl" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          <div class="invalid-url" *ngIf="!getSafeUrl(prog.url)">
+            <span>Media Unavailable</span>
+          </div>
+        </div>
+        <div class="card-details">
+          <h3>{{ prog.title }}</h3>
+          <div class="badges-row-simple">
+            <span class="outline-badge">{{ prog.type }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. LATEST EVENTS -->
+  <section class="module-section" *ngIf="latestEvents.length > 0">
+    <div class="module-header">
+      <div class="header-title-pack">
+        <div class="tv-icon-base event-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+        </div>
+        <h2>University Events</h2>
+      </div>
+      <a routerLink="/events" class="btn-view-all">View all &rarr;</a>
+    </div>
+
+    <div class="card-grid">
+      <div class="ui-card" *ngFor="let ev of latestEvents">
+        <!-- Facade Wrapper -->
+        <div class="facade-container" *ngIf="activeVideoKey !== 'event-' + ev.id" (click)="playVideo('event-' + ev.id)">
+          <img loading="lazy" [src]="'https://img.youtube.com/vi/' + extractVideoId(ev.url) + '/hqdefault.jpg'"
+            alt="Video Thumbnail" class="facade-img">
+          <div class="facade-play-btn">
+            <svg viewBox="0 0 68 48" class="youtube-play-icon">
+              <path class="ytp-large-play-button-bg"
+                d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z"
+                fill="#FF0000"></path>
+              <path d="M 45,24 27,14 27,34" fill="#fff"></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- iframe conditionally renders -->
+        <div class="iframe-container" *ngIf="activeVideoKey === 'event-' + ev.id">
+          <iframe *ngIf="getSafeUrl(ev.url); let safeUrl" [src]="safeUrl" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          <div class="invalid-url" *ngIf="!getSafeUrl(ev.url)">
+            <span>Media Unavailable</span>
+          </div>
+        </div>
+        <div class="card-details">
+          <h3>{{ ev.title }}</h3>
+          <p class="meta-sub" *ngIf="ev.eventDate">📅 {{ ev.eventDate | date:'mediumDate' }}</p>
+          <div class="badges-row-simple">
+            <span class="outline-badge">{{ ev.type }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. UPCOMING SCHEDULES -->
+  <section class="module-section" *ngIf="latestSchedules.length > 0">
+    <div class="module-header">
+      <div class="header-title-pack">
+        <div class="tv-icon-base schedule-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+            </path>
+          </svg>
+        </div>
+        <h2>Upcoming Schedules</h2>
+      </div>
+      <a routerLink="/schedules" class="btn-view-all">View all &rarr;</a>
+    </div>
+
+    <div class="card-grid">
+      <div class="ui-card schedule-ui-card" *ngFor="let sch of latestSchedules" (click)="previewFile(sch.fileName)">
+        <div class="card-thumbnail pdf-thumbnail">
+          <iframe [src]="getSafePdfUrl(sch.fileName)" title="PDF Preview" scrolling="no"
+            class="pdf-thumbnail-frame"></iframe>
+          <div class="thumbnail-overlay"></div>
+        </div>
+        <div class="card-details">
+          <h3>{{ sch.title }}</h3>
+          <div class="card-actions-row">
+            <button class="btn-card-action" title="Preview File">
+              <svg aria-hidden="true" width="16" height="16" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+              Preview
+            </button>
+            <button class="btn-card-action btn-blue-action" (click)="downloadFile($event, sch.fileName)"
+              title="Download">
+              <svg aria-hidden="true" width="16" height="16" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-8 1V4m0 12-4-4m4 4 4-4" />
+              </svg>
+              Download
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- PROGRAMMATIC JS CONFETTI LAUNCH MODAL -->
+<div class="modal-overlay-bg launch-modal-overlay" *ngIf="showLaunchModal">
+  <div class="modal-card" [class.launch-expanded]="isVideoLaunched">
+    <button class="modal-close" (click)="closeLaunchModal()">✕</button>
+
+    <!-- Countdown / Confetti Loader State -->
+    <div class="modal-internal" *ngIf="!isVideoLaunched">
+
+      <!-- New Glowing Orbs and Ring Container -->
+      <div class="pulsing-orbs mt-4 mb-4">
+        <div class="pinging-rings"></div>
+        <img src="assets/images/braoutv-latest-logo.png" alt="BRAOU TV Target" class="bouncing-logo">
+      </div>
+
+      <!-- Typography precisely matching Home Page aesthetics -->
+      <h2 class="modal-hero-title mt-4 mb-4" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; letter-spacing: 0;">
+        <span style="color: #3b82f6; font-weight: 800;">BRAOU</span>
+        <span style="background-color: white; color: red; font-size: 0.85em; padding: 0.05em 0.15em; border-radius: 6px; font-weight: 900; line-height: 1;">TV</span>
+      </h2>
+
+      <div class="modal-live-status mt-2 mb-4">
+        <span class="live-pulse-dot" style="background-color: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+        <span style="color: #10b981; font-weight: 900; letter-spacing: 1px;">IS LIVE NOW!</span>
+      </div>
+
+      <div class="modal-progress mt-4">
+        <div class="modal-progress-bar animate-bar"></div>
+      </div>
+    </div>
+
+    <!-- YouTube Frame State -->
+    <div class="video-container-launch" *ngIf="isVideoLaunched">
+      <iframe *ngIf="contactObj?.launchVideoUrl; else fallbackText" [src]="getSafeUrl(contactObj?.launchVideoUrl, true)"
+        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+      <ng-template #fallbackText>
+        <div class="launch-fallback">Launch video is not configured by the admin yet!</div>
+      </ng-template>
+    </div>
+
+  </div>
+</div>

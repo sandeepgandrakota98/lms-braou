@@ -1,0 +1,157 @@
+<div class="user-courses-container">
+  <div class="sticky-group">
+    <div class="page-header">
+      <h1 class="page-title">Courses</h1>
+    </div>
+
+  <div class="courses-navigation">
+    <div class="tabs-container">
+      <button *ngFor="let type of courseTypes" class="tab-btn" [ngClass]="{'active': activeType === type}"
+        (click)="setActiveTab(type)">
+        {{ type }}
+      </button>
+    </div>
+
+    <div class="filters-container">
+      <div class="search-box-container">
+        <svg class="search-icon" aria-hidden="true" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input type="text" class="custom-search" placeholder="Search courses..." [(ngModel)]="searchQuery" (ngModelChange)="filterCourses()">
+      </div>
+
+      <!-- Custom Subject Dropdown -->
+      <div class="custom-dropdown" (click)="toggleDropdown('subject', $event)">
+        <div class="dropdown-trigger" [class.active-trigger]="isSubjectDropdownOpen">
+          <span>{{ selectedSubject }}</span>
+          <svg class="trigger-icon" [class.rotated]="isSubjectDropdownOpen" aria-hidden="true" width="16" height="16" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
+          </svg>
+        </div>
+        <ul class="dropdown-menu custom-scrollbar" *ngIf="isSubjectDropdownOpen" (click)="$event.stopPropagation()">
+        <div class="dropdown-inner-search" (click)="$event.stopPropagation()">
+          <input type="text" placeholder="Search..." [(ngModel)]="searchSubject" class="inner-search-input" appAutoFocus>
+        </div>
+        <li *ngFor="let subject of subjects | searchFilter:searchSubject" class="dropdown-option" [class.selected]="subject === selectedSubject" (click)="selectSubject(subject)">
+          <svg *ngIf="subject === selectedSubject" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          {{ subject }}
+        </li>
+      </ul>
+    </div>
+
+    <!-- Custom Faculty Dropdown -->
+    <div class="custom-dropdown" (click)="toggleDropdown('faculty', $event)">
+      <div class="dropdown-trigger" [class.active-trigger]="isFacultyDropdownOpen">
+        <span>{{ selectedFaculty }}</span>
+        <svg class="trigger-icon" [class.rotated]="isFacultyDropdownOpen" aria-hidden="true" width="16" height="16" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
+        </svg>
+      </div>
+      <ul class="dropdown-menu custom-scrollbar" *ngIf="isFacultyDropdownOpen" (click)="$event.stopPropagation()">
+        <div class="dropdown-inner-search" (click)="$event.stopPropagation()">
+          <input type="text" placeholder="Search..." [(ngModel)]="searchFaculty" class="inner-search-input" appAutoFocus>
+        </div>
+        <li *ngFor="let faculty of faculties | searchFilter:searchFaculty" class="dropdown-option" [class.selected]="faculty === selectedFaculty" (click)="selectFaculty(faculty)">
+          <svg *ngIf="faculty === selectedFaculty" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          {{ faculty }}
+        </li>
+      </ul>
+    </div>
+
+      <!-- Custom Year Dropdown -->
+      <div class="custom-dropdown" (click)="toggleDropdown('year', $event)" *ngIf="activeType !== 'Ph.D'">
+        <div class="dropdown-trigger" [class.active-trigger]="isYearDropdownOpen">
+          <span>{{ selectedYear !== 'All Years' ? 'Year ' + selectedYear : selectedYear }}</span>
+          <svg class="trigger-icon" [class.rotated]="isYearDropdownOpen" aria-hidden="true" width="16" height="16" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
+          </svg>
+        </div>
+        <ul class="dropdown-menu custom-scrollbar" *ngIf="isYearDropdownOpen" (click)="$event.stopPropagation()">
+        <div class="dropdown-inner-search" (click)="$event.stopPropagation()">
+          <input type="text" placeholder="Search..." [(ngModel)]="searchYear" class="inner-search-input" appAutoFocus>
+        </div>
+        <li *ngFor="let year of years | searchFilter:searchYear" class="dropdown-option" [class.selected]="year === selectedYear" (click)="selectYear(year)">
+          <svg *ngIf="year === selectedYear" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          {{ year !== 'All Years' ? 'Year ' + year : year }}
+        </li>
+      </ul>
+      </div>
+
+      <!-- Custom Semester Dropdown -->
+      <div class="custom-dropdown" (click)="toggleDropdown('semester', $event)" *ngIf="activeType !== 'Ph.D'">
+        <div class="dropdown-trigger" [class.active-trigger]="isSemesterDropdownOpen">
+          <span>{{ selectedSemester !== 'All Semesters' ? 'Semester ' + selectedSemester : selectedSemester }}</span>
+          <svg class="trigger-icon" [class.rotated]="isSemesterDropdownOpen" aria-hidden="true" width="16" height="16" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
+          </svg>
+        </div>
+        <ul class="dropdown-menu custom-scrollbar" *ngIf="isSemesterDropdownOpen" (click)="$event.stopPropagation()">
+        <div class="dropdown-inner-search" (click)="$event.stopPropagation()">
+          <input type="text" placeholder="Search..." [(ngModel)]="searchSemester" class="inner-search-input" appAutoFocus>
+        </div>
+        <li *ngFor="let sem of semesters | searchFilter:searchSemester" class="dropdown-option" [class.selected]="sem === selectedSemester" (click)="selectSemester(sem)">
+          <svg *ngIf="sem === selectedSemester" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          {{ sem !== 'All Semesters' ? 'Semester ' + sem : sem }}
+        </li>
+      </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Content Grid -->
+<div class="courses-content-area">
+
+    <div class="loading-state" *ngIf="isLoading">
+      <div class="spinner"></div>
+      <p>Loading courses...</p>
+    </div>
+
+    <div class="grid-container" *ngIf="!isLoading && filteredCourses.length > 0">
+      <div class="video-card" *ngFor="let course of filteredCourses">
+        <!-- Facade Wrapper -->
+        <div class="facade-container" *ngIf="activeVideoId !== course.id" (click)="playVideo(course.id)">
+          <img loading="lazy" [src]="'https://img.youtube.com/vi/' + extractVideoId(course.url) + '/hqdefault.jpg'" alt="Video Thumbnail" class="facade-img">
+          <div class="facade-play-btn">
+            <svg viewBox="0 0 68 48" class="youtube-play-icon">
+              <path class="ytp-large-play-button-bg" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z" fill="#FF0000"></path>
+              <path d="M 45,24 27,14 27,34" fill="#fff"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="iframe-container" *ngIf="activeVideoId === course.id">
+          <iframe *ngIf="getSafeUrl(course.url); let safeUrl" [src]="safeUrl" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+
+          <div class="invalid-url" *ngIf="!getSafeUrl(course.url)">
+            <span>Media Unavailable</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <h3>{{ course.title }}</h3>
+
+          <div class="course-meta">
+            <p class="subject-text" *ngIf="course.subject">{{ course.subject }}</p>
+
+            <div class="academic-details">
+              <span class="detail-badge" *ngIf="course.type">{{ course.type }}</span>
+              <span class="detail-badge" *ngIf="course.faculty">{{ course.faculty }}</span>
+              <span class="detail-badge" *ngIf="course.courseYear">Year {{ course.courseYear }}</span>
+              <span class="detail-badge" *ngIf="course.semester">Sem {{ course.semester }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!isLoading && filteredCourses.length === 0">
+      <p>No courses match your criteria.</p>
+    </div>
+
+</div>
+</div>

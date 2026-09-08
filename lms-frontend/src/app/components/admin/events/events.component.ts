@@ -1,0 +1,187 @@
+import { Component, OnInit, HostListener } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { EventService, Event } from '../../../services/event.service';
+import { HttpClientModule } from '@angular/common/http';
+import { SearchFilterPipe } from '../../../pipes/search-filter.pipe';
+import { AutoFocusDirective } from '../../../directives/auto-focus.directive';
+
+@Component({
+  selector: 'app-events',
+  standalone: true,
+  imports: [CommonModule, FormsModule, HttpClientModule, SearchFilterPipe, AutoFocusDirective],
+  templateUrl: './events.component.html',
+  styleUrls: ['./events.component.css']
+})
+export class EventsComponent implements OnInit {
+  events: Event[] = [];
+  
+  showAddForm = false;
+  showDeleteConfirm = false;
+  activeTab = 'Convocations';
+  
+  editingEventId: number | null = null;
+  deletingEventId: number | null = null;
+  dropdownOpen = false;
+  
+  newEventTitle = '';
+  newEventUrl = '';
+  newEventType = 'Convocations';
+  newEventDate = '';
+  searchType = '';
+  isSaving = false;
+  isDeleting = false;
+  isSaved = false;
+
+  tabs = ['Convocations', 'Seminars', 'Concerts', 'Workshop'];
+
+  constructor(private eventService: EventService) {}
+
+  ngOnInit() {
+    this.loadEvents();
+  }
+
+  loadEvents() {
+    this.eventService.getEvents().subscribe({
+      next: (data: Event[]) => {
+        this.events = data.sort((a, b) => (b.id || 0) - (a.id || 0));
+      },
+      error: (err: any) => console.error('Error loading events', err)
+    });
+  }
+
+  @HostListener('document:keydown.enter', ['$event'])
+  handleEnter(event: KeyboardEvent) {
+    if (this.showAddForm && !this.isSaving && !this.isSaved) {
+      if (this.newEventTitle.trim() && this.newEventUrl.trim() && this.newEventType) {
+        event.preventDefault();
+        this.saveEvent();
+      }
+    } else if (this.showDeleteConfirm && !this.isDeleting && !this.isSaved) {
+      event.preventDefault();
+      this.confirmDelete();
+    }
+  }
+
+  get filteredEvents(): Event[] {
+    return this.events.filter(e => e.type === this.activeTab);
+  }
+
+  setTab(tab: string) {
+    this.activeTab = tab;
+  }
+
+  toggleAddForm() {
+    this.showAddForm = !this.showAddForm;
+    if (!this.showAddForm) {
+      this.resetForm();
+    }
+  }
+
+  openEditForm(event: Event) {
+    this.editingEventId = event.id!;
+    this.newEventTitle = event.title;
+    this.newEventUrl = event.url;
+    this.newEventType = event.type;
+    this.newEventDate = event.eventDate || '';
+    this.showAddForm = true;
+  }
+
+  saveEvent() {
+    if (this.newEventTitle.trim() && this.newEventUrl.trim() && this.newEventType) {
+      this.isSaving = true;
+      this.isSaved = false;
+      if (this.editingEventId) {
+        // Edit mode
+        const updatedEvent: Event = {
+          title: this.newEventTitle,
+          url: this.newEventUrl,
+          type: this.newEventType,
+          eventDate: this.newEventDate
+        };
+        
+        this.eventService.updateEvent(this.editingEventId, updatedEvent).subscribe({
+          next: () => {
+            this.loadEvents();
+            this.isSaving = false;
+            this.isSaved = true;
+            setTimeout(() => {
+              this.toggleAddForm();
+              this.isSaved = false;
+            }, 1000);
+          },
+          error: (err: any) => {
+            console.error('Error updating event', err);
+            this.isSaving = false;
+          }
+        });
+      } else {
+        // Add mode
+        const newEvent: Event = {
+          title: this.newEventTitle,
+          url: this.newEventUrl,
+          type: this.newEventType,
+          eventDate: this.newEventDate
+        };
+        
+        this.eventService.addEvent(newEvent).subscribe({
+          next: (savedEvent: Event) => {
+            this.events.unshift(savedEvent);
+            this.isSaving = false;
+            this.isSaved = true;
+            setTimeout(() => {
+              this.toggleAddForm();
+              this.isSaved = false;
+            }, 1000);
+          },
+          error: (err: any) => {
+            console.error('Error adding event', err);
+            this.isSaving = false;
+          }
+        });
+      }
+    }
+  }
+
+  promptDelete(id: number) {
+    this.deletingEventId = id;
+    this.showDeleteConfirm = true;
+  }
+
+  cancelDelete() {
+    this.deletingEventId = null;
+    this.showDeleteConfirm = false;
+  }
+
+  confirmDelete() {
+    if (this.deletingEventId) {
+      this.isDeleting = true;
+      this.isSaved = false;
+      this.eventService.deleteEvent(this.deletingEventId).subscribe({
+        next: () => {
+          this.events = this.events.filter(e => e.id !== this.deletingEventId);
+          this.isDeleting = false;
+          this.isSaved = true;
+          setTimeout(() => {
+            this.cancelDelete();
+            this.isSaved = false;
+          }, 1000);
+        },
+        error: (err: any) => {
+          console.error('Error deleting event', err);
+          this.isDeleting = false;
+        }
+      });
+    }
+  }
+  
+  resetForm() {
+    this.editingEventId = null;
+    this.newEventTitle = '';
+    this.newEventUrl = '';
+    this.newEventType = this.activeTab;
+    this.newEventDate = '';
+    this.dropdownOpen = false;
+    this.searchType = '';
+  }
+}

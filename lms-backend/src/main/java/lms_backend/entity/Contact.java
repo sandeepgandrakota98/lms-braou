@@ -1,0 +1,86 @@
+package lms_backend.entity;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "contact")
+public class Contact {
+
+    @Id
+    private Long id = 1L;
+
+    private String name;
+    private String designation;
+    private String email;
+    private String mobile1;
+    private String mobile2;
+    private String launchVideoUrl;
+    private Boolean isLaunchVideoActive = false;
+
+    public Contact() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getMobile1() {
+        return mobile1;
+    }
+
+    public void setMobile1(String mobile1) {
+        this.mobile1 = mobile1;
+    }
+
+    public String getMobile2() {
+        return mobile2;
+    }
+
+    public void setMobile2(String mobile2) {
+        this.mobile2 = mobile2;
+    }
+
+    public String getLaunchVideoUrl() {
+        return launchVideoUrl;
+    }
+
+    public void setLaunchVideoUrl(String launchVideoUrl) {
+        this.launchVideoUrl = launchVideoUrl;
+    }
+
+    public Boolean getIsLaunchVideoActive() {
+        return isLaunchVideoActive;
+    }
+
+    public void setIsLaunchVideoActive(Boolean isLaunchVideoActive) {
+        this.isLaunchVideoActive = isLaunchVideoActive;
+    }
+}
